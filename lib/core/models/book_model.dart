@@ -12,7 +12,7 @@ class BookModel extends HiveObject{
   @HiveField(2)
   final String author;
  @HiveField(3) 
-  final double rate;
+  final String rate;
   @HiveField(4)
   final String notes;
 

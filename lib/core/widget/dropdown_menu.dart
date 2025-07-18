@@ -4,9 +4,16 @@ import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
 
 class CustomDropdownMenu extends StatefulWidget {
-  const CustomDropdownMenu({super.key , required this.data, required this.defaultText});
-  final List <SelectedListItem<String>> data;
+  const CustomDropdownMenu({
+    super.key,
+    required this.data,
+    required this.defaultText,
+    required this.onChanged,
+  });
+  final List<SelectedListItem<String>> data;
   final String defaultText;
+  final void Function(String)? onChanged;
+
   @override
   State<CustomDropdownMenu> createState() => _CustomDropdownMenuState();
 }
@@ -45,6 +52,9 @@ class _CustomDropdownMenuState extends State<CustomDropdownMenu> {
             setState(() {
               var temp = list.toString().substring(1);
               _selectedItem = temp.substring(0, temp.length - 1);
+              if (widget.onChanged != null) {
+                widget.onChanged!(_selectedItem);
+              }
             });
           },
         ),

@@ -36,8 +36,7 @@ class BookMangeCubit extends Cubit<BookMangeState> {
   }) async {
     try {
       emit(BookMangeInitial());
-      oldVersionOfTheBook.delete();
-      await bookBox.add(newVersionOfTheBook);
+      await bookBox.put(oldVersionOfTheBook.key, newVersionOfTheBook);
       emit(BookMangeSuccess());
     } catch (e) {
       emit(BookMangeFailure(message: e.toString()));

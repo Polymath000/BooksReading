@@ -1,19 +1,23 @@
 import 'package:flutter/material.dart';
 
 class CustomFormTextField extends StatefulWidget {
-   CustomFormTextField( {
-    super.key, 
-    required this.hint, 
-    required this.keyboardType, 
-    this.eyeIconIsVisible =false, 
-    this.onSaved , 
-    this.maxLines = 1
-    });
-    int maxLines; 
+  CustomFormTextField({
+    super.key,
+    required this.hint,
+    required this.keyboardType,
+    this.eyeIconIsVisible = false,
+    this.onSaved,
+    this.maxLines = 1,
+    required this.validator,
+    required this.intialValue,
+  });
+  final String intialValue;
+  int maxLines;
   final String hint;
   final TextInputType keyboardType;
   final bool eyeIconIsVisible;
-  void Function(String?)? onSaved = (value){};
+  void Function(String?)? onSaved = (value) {};
+  String? Function(String?) validator;
   @override
   State<CustomFormTextField> createState() => _CustomFormTextFieldState();
 }
@@ -30,20 +34,18 @@ class _CustomFormTextFieldState extends State<CustomFormTextField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      initialValue: widget.intialValue,
       maxLines: widget.maxLines,
       onSaved: widget.onSaved,
       autovalidateMode: AutovalidateMode.disabled,
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'this field is required';
-        }
-        return null;
-      },
+      validator: widget.validator,
       keyboardType: widget.keyboardType,
       obscureText: widget.eyeIconIsVisible ? isObscure : false,
       decoration: InputDecoration(
-        contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-      
+        contentPadding: const EdgeInsets.symmetric(
+          horizontal: 20,
+          vertical: 16,
+        ),
         suffixIcon: widget.eyeIconIsVisible
             ? GestureDetector(
                 onTap: () {
@@ -77,10 +79,7 @@ class _CustomFormTextFieldState extends State<CustomFormTextField> {
   OutlineInputBorder BuildBorder() {
     return OutlineInputBorder(
       borderRadius: BorderRadius.circular(16),
-      borderSide: const BorderSide(
-        color: Color(0xFFE6E9E9),
-        width: 1,
-      ),
+      borderSide: const BorderSide(color: Color(0xFFE6E9E9), width: 1),
     );
   }
 }

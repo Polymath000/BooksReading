@@ -1,7 +1,9 @@
 import 'package:books_reading/core/helpers/show_custom_dialog.dart';
 import 'package:books_reading/core/utls/app_colors.dart';
+import 'package:books_reading/features/home/presentation/cubit/book_manage/book_mange_cubit.dart';
 import 'package:books_reading/features/home/presentation/views/widget/home_view_body.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomeView extends StatefulWidget {
   HomeView({super.key});
@@ -40,7 +42,15 @@ class _HomeViewState extends State<HomeView>
     } else {
       await _controller.forward();
     }
-    showCustomDialog(context: context);
+    showCustomDialog(
+      context: context,
+      name: '',
+      author: '',
+      category: 'History',
+      rate: '⭐⭐⭐',
+      note: '',
+      title: 'Add new book',
+    );
   }
 
   @override
@@ -69,7 +79,10 @@ class _HomeViewState extends State<HomeView>
         ),
         label: Text(''),
       ),
-      body: HomeViewBody(listKey: _listKey),
+      body: BlocProvider(
+        create: (context) => BookMangeCubit(),
+        child: HomeViewBody(listKey: _listKey),
+      ),
     );
   }
 }

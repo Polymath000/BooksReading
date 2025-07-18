@@ -3,8 +3,9 @@ import 'package:books_reading/core/utls/app_text_style.dart';
 import 'package:flutter/material.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({super.key});
-
+  const CustomButton({super.key, required this.onPressed, required this.title});
+  final void Function()? onPressed;
+  final String title;
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
@@ -15,9 +16,9 @@ class CustomButton extends StatelessWidget {
 
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
       ),
-      onPressed: () {},
+      onPressed: onPressed,
       child: Text(
-        'Add New App',
+        title,
         style: AppTextStyles.bodyLarge?.copyWith(
           color: AppColors.white,
           fontWeight: FontWeight.bold,

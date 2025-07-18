@@ -20,7 +20,7 @@ class BookModelAdapter extends TypeAdapter<BookModel> {
       name: fields[0] as String,
       category: fields[1] as String,
       author: fields[2] as String,
-      rate: fields[3] as double,
+      rate: fields[3] as String,
       notes: fields[4] as String,
     );
   }
