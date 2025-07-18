@@ -56,7 +56,6 @@ Future<dynamic> showCustomDialog({required BuildContext context}) {
                 maxLines: 15,
               ),
               SizedBox(height: 16),
-
               CustomButton(),
             ],
           ),
