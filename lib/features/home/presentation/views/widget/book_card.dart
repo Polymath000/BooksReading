@@ -44,7 +44,7 @@ class BookCard extends StatelessWidget {
             Text(
               book.author,
               style: AppTextStyles.bodyLarge!.copyWith(
-                color: AppColors.cyan,
+                color: AppColors.waterBlue,
                 overflow: TextOverflow.ellipsis,
               ),
             ),
@@ -52,14 +52,15 @@ class BookCard extends StatelessWidget {
               book.category,
               style: AppTextStyles.bodyLarge!.copyWith(
                 overflow: TextOverflow.ellipsis,
-                color: AppColors.darkGrey,
+                color: AppColors.black,
               ),
             ),
             Text(book.rate, style: AppTextStyles.bodyLarge),
             Align(
               alignment: Alignment.topRight,
               child: IconButton(
-                icon: Icon(Icons.delete),
+                icon: Icon(Icons.delete, color: AppColors.black),
+
                 onPressed: () {
                   BlocProvider.of<BookMangeCubit>(
                     context,

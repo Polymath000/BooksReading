@@ -64,7 +64,6 @@ class _CustomFormTextFieldState extends State<CustomFormTextField> {
             : null,
         hintText: widget.hint,
         filled: true,
-        fillColor: const Color(0xFFFFFFFF),
         border: BuildBorder(),
         enabledBorder: BuildBorder(),
         focusedBorder: BuildBorder().copyWith(
