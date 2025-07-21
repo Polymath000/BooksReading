@@ -10,6 +10,9 @@ final class BookMangeFailure extends BookMangeState {
   BookMangeFailure({required this.message});
 }
 
-final class BookMangeSuccess extends BookMangeState {}
+final class BookMangeSuccess extends BookMangeState {
+  final List<BookModel> books;
+  BookMangeSuccess({required this.books});
+}
 
 final class BookMangeloading extends BookMangeState {}

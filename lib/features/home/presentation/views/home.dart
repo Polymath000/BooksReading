@@ -43,7 +43,7 @@ class _HomeViewState extends State<HomeView>
     } else {
       await _controller.forward();
     }
-    showCustomDialog(
+    showCustomAddDialog(
       context: context,
       book: BookModel(
         name: '',
@@ -56,6 +56,20 @@ class _HomeViewState extends State<HomeView>
     );
   }
 
+  AnimatedBuilder AnimateFloatingActionButton() {
+    return AnimatedBuilder(
+      animation: _controller,
+      child: Icon(Icons.add, color: AppColors.white),
+
+      builder: (context, child) {
+        return Transform.rotate(
+          angle: _controller.value * 2 * 3.1416,
+          child: child,
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -65,21 +79,9 @@ class _HomeViewState extends State<HomeView>
         backgroundColor: AppColors.blue,
         tooltip: 'Add New Book',
         elevation: 6,
-
         extendedPadding: EdgeInsets.only(right: 10, left: 16),
         onPressed: _onFabPressed,
-
-        icon: AnimatedBuilder(
-          animation: _controller,
-          child: Icon(Icons.add, color: AppColors.white),
-
-          builder: (context, child) {
-            return Transform.rotate(
-              angle: _controller.value * 2 * 3.1416,
-              child: child,
-            );
-          },
-        ),
+        icon: AnimateFloatingActionButton(),
         label: Text(''),
       ),
       body: BlocProvider(

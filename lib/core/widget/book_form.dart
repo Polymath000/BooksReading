@@ -2,11 +2,10 @@ import 'package:books_reading/core/helpers/category.dart';
 import 'package:books_reading/core/helpers/rating.dart';
 import 'package:books_reading/core/models/book_model.dart';
 import 'package:books_reading/core/utls/app_text_style.dart';
-import 'package:books_reading/core/widget/custom_button.dart';
+import 'package:books_reading/core/widget/add_button.dart';
 import 'package:books_reading/core/widget/custom_textfield.dart';
-import 'package:books_reading/features/home/presentation/cubit/book_manage/book_mange_cubit.dart';
+import 'package:books_reading/core/widget/update_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BookForm extends StatefulWidget {
   BookForm({super.key, required this.book, required this.title});
@@ -120,36 +119,21 @@ class _BookFormState extends State<BookForm> {
             intialValue: notes,
           ),
           SizedBox(height: 16),
-          CustomButton(
+          AddButton(
+            formKey: formKey,
+            oldBook: widget.book,
+            newbook: BookModel(
+              name: name,
+              category: category,
+              author: author,
+              rate: rating,
+              notes: notes,
+            ),
             onPressed: () {
-              if (formKey.currentState!.validate()) {
-                formKey.currentState!.save();
-                BookModel newBook = BookModel(
-                  name: name,
-                  author: author,
-                  category: category,
-                  rate: rating,
-                  notes: notes,
-                );
-                if (widget.title == 'Update') {
-                  BlocProvider.of<BookMangeCubit>(context).editBook(
-                    oldVersionOfTheBook: widget.book,
-                    newVersionOfTheBook: newBook,
-                  );
-                } else {
-                  BlocProvider.of<BookMangeCubit>(
-                    context,
-                  ).addNewBook(book: newBook);
-                }
-                Navigator.pop(context);
-                BlocProvider.of<BookMangeCubit>(context).fetchAllBooks();
-              } else {
-                setState(() {
-                  autovalidateMode = AutovalidateMode.always;
-                });
-              }
+              setState(() {
+                autovalidateMode = AutovalidateMode.always;
+              });
             },
-            title: widget.title,
           ),
         ],
       ),

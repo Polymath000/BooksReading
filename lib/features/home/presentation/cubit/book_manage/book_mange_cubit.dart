@@ -7,14 +7,23 @@ import 'package:meta/meta.dart';
 part 'book_mange_state.dart';
 
 class BookMangeCubit extends Cubit<BookMangeState> {
-  BookMangeCubit() : super(BookMangeIntial());
+  BookMangeCubit() : super(BookMangeIntial()) {
+    fetchBooksOnStart();
+  }
   var bookBox = Hive.box<BookModel>(kBoxName);
+
+  void fetchBooksOnStart() {
+    emit(BookMangeloading());
+    final books = fetchAllBooks();
+    emit(BookMangeSuccess(books: books));
+  }
 
   Future<void> addNewBook({required BookModel book}) async {
     try {
       emit(BookMangeloading());
       await bookBox.add(book);
-      emit(BookMangeSuccess());
+      fetchAllBooks();
+      emit(BookMangeSuccess(books: books));
     } catch (e) {
       emit(BookMangeFailure(message: e.toString()));
     }
@@ -24,7 +33,8 @@ class BookMangeCubit extends Cubit<BookMangeState> {
     try {
       emit(BookMangeloading());
       await book.delete();
-      emit(BookMangeSuccess());
+      fetchAllBooks();
+      emit(BookMangeSuccess(books: books));
     } catch (e) {
       emit(BookMangeFailure(message: e.toString()));
     }
@@ -36,28 +46,18 @@ class BookMangeCubit extends Cubit<BookMangeState> {
   }) async {
     try {
       emit(BookMangeloading());
-      // oldVersionOfTheBook.delete();
-      // addNewBook(book: newVersionOfTheBook);
-      // await removeBook(book: oldVersionOfTheBook);
-
       await bookBox.put(oldVersionOfTheBook.key, newVersionOfTheBook);
-      // oldVersionOfTheBook = newVersionOfTheBook;
-      emit(BookMangeSuccess());
+      fetchAllBooks();
+      emit(BookMangeSuccess(books: books));
     } catch (e) {
       emit(BookMangeFailure(message: e.toString()));
     }
   }
 
   List<BookModel> books = [];
+
   List<BookModel> fetchAllBooks() {
-    try {
-      emit(BookMangeloading());
-      books = bookBox.values.toList();
-      emit(BookMangeSuccess());
-      return books;
-    } catch (e) {
-      emit(BookMangeFailure(message: e.toString()));
-      return [];
-    }
+    books = bookBox.values.toList();
+    return books;
   }
 }
