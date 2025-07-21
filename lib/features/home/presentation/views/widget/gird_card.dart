@@ -19,7 +19,7 @@ class _GirdCardState extends State<GirdCard> {
   @override
   void initState() {
     super.initState();
-    context.read<BookMangeCubit>().fetchBooksOnStart();
+    context.read<BookMangeCubit>().fetchAllBooks();
   }
 
   @override

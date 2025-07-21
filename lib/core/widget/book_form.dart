@@ -45,7 +45,7 @@ class _BookFormState extends State<BookForm> {
               }
               return null;
             },
-            intialValue: widget.book.name,
+            intialValue: '',
           ),
 
           SizedBox(height: 16),
@@ -71,7 +71,7 @@ class _BookFormState extends State<BookForm> {
               }
               return null;
             },
-            intialValue: widget.book.author,
+            intialValue: '',
           ),
 
           SizedBox(height: 16),
@@ -81,6 +81,7 @@ class _BookFormState extends State<BookForm> {
                 widget.book.category = value;
               });
             },
+            selectedCategory: 'History',
           ),
           SizedBox(height: 16),
 
@@ -90,6 +91,7 @@ class _BookFormState extends State<BookForm> {
                 widget.book.rate = value;
               });
             },
+            selecteditem: '⭐⭐⭐',
           ),
           SizedBox(height: 16),
           CustomFormTextField(

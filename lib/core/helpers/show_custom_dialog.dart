@@ -9,7 +9,6 @@ import 'package:books_reading/features/home/presentation/cubit/book_manage/book_
 Future<dynamic> showCustomAddDialog({
   required BuildContext context,
   required BookModel book,
-  required String title,
 }) {
   return showDialog(
     context: context,

@@ -9,15 +9,10 @@ import 'package:books_reading/core/theme/dark_and_light_mode/cubit/dark_mode_cub
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
   await Hive.initFlutter();
   Hive.registerAdapter(BookModelAdapter());
-
   await Hive.openBox<BookModel>(kBoxName);
   runApp(
-    BlocProvider(
-      create: (_) => DarkModeCubit(),
-      child: const BookReading(),
-    ),
+    BlocProvider(create: (_) => DarkModeCubit(), child: const BookReading()),
   );
 }

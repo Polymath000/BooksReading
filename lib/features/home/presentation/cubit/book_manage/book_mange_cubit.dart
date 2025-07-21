@@ -1,29 +1,35 @@
 import 'package:bloc/bloc.dart';
 import 'package:books_reading/core/constants/constants.dart';
 import 'package:books_reading/core/models/book_model.dart';
+import 'package:flutter/foundation.dart';
 import 'package:hive/hive.dart';
+import 'package:hive_flutter/adapters.dart';
 import 'package:meta/meta.dart';
-
 part 'book_mange_state.dart';
 
 class BookMangeCubit extends Cubit<BookMangeState> {
   BookMangeCubit() : super(BookMangeIntial()) {
-    fetchBooksOnStart();
+    _bookBoxListenable.addListener(_onBoxChanged);
+    fetchAllBooks();
   }
   var bookBox = Hive.box<BookModel>(kBoxName);
+  final ValueListenable _bookBoxListenable = Hive.box<BookModel>(
+    kBoxName,
+  ).listenable();
+  void _onBoxChanged() {
+    fetchAllBooks();
+  }
 
-  void fetchBooksOnStart() {
-    emit(BookMangeloading());
-    final books = fetchAllBooks();
-    emit(BookMangeSuccess(books: books));
+  @override
+  Future<void> close() {
+    _bookBoxListenable.removeListener(_onBoxChanged);
+    return super.close();
   }
 
   Future<void> addNewBook({required BookModel book}) async {
     try {
       emit(BookMangeloading());
       await bookBox.add(book);
-      fetchAllBooks();
-      emit(BookMangeSuccess(books: books));
     } catch (e) {
       emit(BookMangeFailure(message: e.toString()));
     }
@@ -33,8 +39,6 @@ class BookMangeCubit extends Cubit<BookMangeState> {
     try {
       emit(BookMangeloading());
       await book.delete();
-      fetchAllBooks();
-      emit(BookMangeSuccess(books: books));
     } catch (e) {
       emit(BookMangeFailure(message: e.toString()));
     }
@@ -47,8 +51,6 @@ class BookMangeCubit extends Cubit<BookMangeState> {
     try {
       emit(BookMangeloading());
       await bookBox.put(oldVersionOfTheBook.key, newVersionOfTheBook);
-      fetchAllBooks();
-      emit(BookMangeSuccess(books: books));
     } catch (e) {
       emit(BookMangeFailure(message: e.toString()));
     }
@@ -56,8 +58,9 @@ class BookMangeCubit extends Cubit<BookMangeState> {
 
   List<BookModel> books = [];
 
-  List<BookModel> fetchAllBooks() {
+  void fetchAllBooks() async {
+    emit(BookMangeloading());
     books = bookBox.values.toList();
-    return books;
+    emit(BookMangeSuccess(books: books));
   }
 }

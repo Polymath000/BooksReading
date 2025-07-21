@@ -52,7 +52,6 @@ class _HomeViewState extends State<HomeView>
         rate: '⭐⭐⭐',
         notes: '',
       ),
-      title: 'Add new book',
     );
   }
 

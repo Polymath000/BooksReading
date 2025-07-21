@@ -4,16 +4,19 @@ import 'package:drop_down_list/model/selected_list_item.dart';
 import 'package:flutter/material.dart';
 
 class Category extends StatefulWidget {
-  const Category({super.key, required this.onCategoryChanged});
+  Category({
+    super.key,
+    required this.onCategoryChanged,
+    required this.selectedCategory,
+  });
   final void Function(String)? onCategoryChanged;
+  String selectedCategory;
 
   @override
   State<Category> createState() => _CategoryState();
 }
 
 class _CategoryState extends State<Category> {
-  String selectedCategory = 'History';
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -33,10 +36,10 @@ class _CategoryState extends State<Category> {
               SelectedListItem<String>(data: 'History'),
               SelectedListItem<String>(data: 'CS'),
             ],
-            defaultText: selectedCategory,
+            defaultText: widget.selectedCategory,
             onChanged: (value) {
               setState(() {
-                selectedCategory = value;
+                widget.selectedCategory = value;
                 if (widget.onCategoryChanged != null) {
                   widget.onCategoryChanged!(value);
                 }

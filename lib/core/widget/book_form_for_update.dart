@@ -94,15 +94,16 @@ class _BookFormForUpdateState extends State<BookFormForUpdate> {
                 category = value;
               });
             },
+            selectedCategory: category,
           ),
           SizedBox(height: 16),
-
           Rating(
             onRatingChanged: (value) {
               setState(() {
                 rating = value;
               });
             },
+            selecteditem: rating,
           ),
           SizedBox(height: 16),
           CustomFormTextField(
