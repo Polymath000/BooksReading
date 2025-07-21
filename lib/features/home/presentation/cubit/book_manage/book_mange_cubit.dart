@@ -7,12 +7,12 @@ import 'package:meta/meta.dart';
 part 'book_mange_state.dart';
 
 class BookMangeCubit extends Cubit<BookMangeState> {
-  BookMangeCubit() : super(BookMangeInitial());
+  BookMangeCubit() : super(BookMangeIntial());
   var bookBox = Hive.box<BookModel>(kBoxName);
 
   Future<void> addNewBook({required BookModel book}) async {
     try {
-      emit(BookMangeInitial());
+      emit(BookMangeloading());
       await bookBox.add(book);
       emit(BookMangeSuccess());
     } catch (e) {
@@ -22,8 +22,8 @@ class BookMangeCubit extends Cubit<BookMangeState> {
 
   Future<void> removeBook({required BookModel book}) async {
     try {
-      emit(BookMangeInitial());
-      book.delete();
+      emit(BookMangeloading());
+      await book.delete();
       emit(BookMangeSuccess());
     } catch (e) {
       emit(BookMangeFailure(message: e.toString()));
@@ -35,8 +35,13 @@ class BookMangeCubit extends Cubit<BookMangeState> {
     required BookModel newVersionOfTheBook,
   }) async {
     try {
-      emit(BookMangeInitial());
+      emit(BookMangeloading());
+      // oldVersionOfTheBook.delete();
+      // addNewBook(book: newVersionOfTheBook);
+      // await removeBook(book: oldVersionOfTheBook);
+
       await bookBox.put(oldVersionOfTheBook.key, newVersionOfTheBook);
+      // oldVersionOfTheBook = newVersionOfTheBook;
       emit(BookMangeSuccess());
     } catch (e) {
       emit(BookMangeFailure(message: e.toString()));
@@ -46,7 +51,7 @@ class BookMangeCubit extends Cubit<BookMangeState> {
   List<BookModel> books = [];
   List<BookModel> fetchAllBooks() {
     try {
-      emit(BookMangeInitial());
+      emit(BookMangeloading());
       books = bookBox.values.toList();
       emit(BookMangeSuccess());
       return books;

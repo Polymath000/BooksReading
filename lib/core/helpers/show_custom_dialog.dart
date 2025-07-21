@@ -1,4 +1,5 @@
-import 'package:books_reading/features/home/presentation/views/widget/book_form.dart';
+import 'package:books_reading/core/models/book_model.dart';
+import 'package:books_reading/core/widget/book_form.dart';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,11 +7,7 @@ import 'package:books_reading/features/home/presentation/cubit/book_manage/book_
 
 Future<dynamic> showCustomDialog({
   required BuildContext context,
-  required String name,
-  required String author,
-  required String category,
-  required String rate,
-  required String note,
+  required BookModel book,
   required String title,
 }) {
   return showDialog(
@@ -22,14 +19,7 @@ Future<dynamic> showCustomDialog({
         child: SingleChildScrollView(
           child: BlocProvider.value(
             value: BookMangeCubit(),
-            child: BookForm(
-              name: name,
-              author: author,
-              category: category,
-              rating: rate,
-              notes: note,
-              title: title,
-            ),
+            child: BookForm(book: book, title: title),
           ),
         ),
       ),

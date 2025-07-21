@@ -1,4 +1,5 @@
 import 'package:books_reading/core/helpers/show_custom_dialog.dart';
+import 'package:books_reading/core/models/book_model.dart';
 import 'package:books_reading/core/utls/app_colors.dart';
 import 'package:books_reading/features/home/presentation/cubit/book_manage/book_mange_cubit.dart';
 import 'package:books_reading/features/home/presentation/views/widget/home_view_body.dart';
@@ -44,11 +45,13 @@ class _HomeViewState extends State<HomeView>
     }
     showCustomDialog(
       context: context,
-      name: '',
-      author: '',
-      category: 'History',
-      rate: '⭐⭐⭐',
-      note: '',
+      book: BookModel(
+        name: '',
+        author: '',
+        category: 'History',
+        rate: '⭐⭐⭐',
+        notes: '',
+      ),
       title: 'Add new book',
     );
   }

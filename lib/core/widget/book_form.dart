@@ -9,21 +9,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class BookForm extends StatefulWidget {
-  BookForm({
-    super.key,
-    required this.name,
-    required this.author,
-    required this.category,
-    required this.rating,
-    required this.notes,
-    required this.title,
-  });
-  String name;
-  String author;
-  String category;
-  String rating;
+  BookForm({super.key, required this.book, required this.title});
+  BookModel book;
   String title;
-  String notes;
   @override
   State<BookForm> createState() => _BookFormState();
 }
@@ -31,18 +19,15 @@ class BookForm extends StatefulWidget {
 class _BookFormState extends State<BookForm> {
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  late BookModel oldVersionOfTheBook;
+  late String name, author, category, rating, notes;
   @override
   void initState() {
-    oldVersionOfTheBook = BookModel(
-      name: widget.name,
-      category: widget.category,
-      author: widget.author,
-      rate: widget.rating,
-      notes: widget.notes,
-    );
-    // TODO: implement initState
     super.initState();
+    name = widget.book.name;
+    author = widget.book.author;
+    category = widget.book.category;
+    rating = widget.book.rate;
+    notes = widget.book.notes;
   }
 
   @override
@@ -64,7 +49,7 @@ class _BookFormState extends State<BookForm> {
             keyboardType: TextInputType.text,
             onSaved: (value) {
               setState(() {
-                widget.name = value!;
+                name = value!;
               });
             },
             validator: (value) {
@@ -73,7 +58,7 @@ class _BookFormState extends State<BookForm> {
               }
               return null;
             },
-            intialValue: widget.name,
+            intialValue: name,
           ),
 
           SizedBox(height: 16),
@@ -90,7 +75,7 @@ class _BookFormState extends State<BookForm> {
             keyboardType: TextInputType.text,
             onSaved: (value) {
               setState(() {
-                widget.author = value!;
+                author = value!;
               });
             },
             validator: (value) {
@@ -99,14 +84,14 @@ class _BookFormState extends State<BookForm> {
               }
               return null;
             },
-            intialValue: widget.author,
+            intialValue: author,
           ),
 
           SizedBox(height: 16),
           Category(
             onCategoryChanged: (value) {
               setState(() {
-                widget.category = value;
+                category = value;
               });
             },
           ),
@@ -115,7 +100,7 @@ class _BookFormState extends State<BookForm> {
           Rating(
             onRatingChanged: (value) {
               setState(() {
-                widget.rating = value;
+                rating = value;
               });
             },
           ),
@@ -126,33 +111,35 @@ class _BookFormState extends State<BookForm> {
             maxLines: 15,
             onSaved: (value) {
               setState(() {
-                widget.notes = value!;
+                notes = value!;
               });
             },
-            validator: (p0) {},
-            intialValue: widget.notes,
+            validator: (p0) {
+              return null;
+            },
+            intialValue: notes,
           ),
           SizedBox(height: 16),
           CustomButton(
             onPressed: () {
               if (formKey.currentState!.validate()) {
                 formKey.currentState!.save();
-                BookModel book = BookModel(
-                  name: widget.name,
-                  category: widget.category,
-                  author: widget.author,
-                  rate: widget.rating,
-                  notes: widget.notes,
+                BookModel newBook = BookModel(
+                  name: name,
+                  author: author,
+                  category: category,
+                  rate: rating,
+                  notes: notes,
                 );
                 if (widget.title == 'Update') {
                   BlocProvider.of<BookMangeCubit>(context).editBook(
-                    oldVersionOfTheBook: oldVersionOfTheBook,
-                    newVersionOfTheBook: book,
+                    oldVersionOfTheBook: widget.book,
+                    newVersionOfTheBook: newBook,
                   );
                 } else {
                   BlocProvider.of<BookMangeCubit>(
                     context,
-                  ).addNewBook(book: book);
+                  ).addNewBook(book: newBook);
                 }
                 Navigator.pop(context);
                 BlocProvider.of<BookMangeCubit>(context).fetchAllBooks();
