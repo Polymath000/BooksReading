@@ -9,13 +9,11 @@ class AddButton extends StatelessWidget {
     super.key,
     required this.formKey,
     required this.newbook,
-    required this.oldBook,
     required this.onPressed,
   });
 
   final GlobalKey<FormState> formKey;
   final BookModel newbook;
-  final BookModel oldBook;
   final VoidCallback onPressed;
 
   @override

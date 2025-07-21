@@ -4,13 +4,11 @@ import 'package:books_reading/core/models/book_model.dart';
 import 'package:books_reading/core/utls/app_text_style.dart';
 import 'package:books_reading/core/widget/add_button.dart';
 import 'package:books_reading/core/widget/custom_textfield.dart';
-import 'package:books_reading/core/widget/update_button.dart';
 import 'package:flutter/material.dart';
 
 class BookForm extends StatefulWidget {
-  BookForm({super.key, required this.book, required this.title});
+  BookForm({super.key, required this.book});
   BookModel book;
-  String title;
   @override
   State<BookForm> createState() => _BookFormState();
 }
@@ -18,17 +16,7 @@ class BookForm extends StatefulWidget {
 class _BookFormState extends State<BookForm> {
   AutovalidateMode autovalidateMode = AutovalidateMode.disabled;
   GlobalKey<FormState> formKey = GlobalKey<FormState>();
-  late String name, author, category, rating, notes;
   @override
-  void initState() {
-    super.initState();
-    name = widget.book.name;
-    author = widget.book.author;
-    category = widget.book.category;
-    rating = widget.book.rate;
-    notes = widget.book.notes;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Form(
@@ -48,7 +36,7 @@ class _BookFormState extends State<BookForm> {
             keyboardType: TextInputType.text,
             onSaved: (value) {
               setState(() {
-                name = value!;
+                widget.book.name = value!;
               });
             },
             validator: (value) {
@@ -57,7 +45,7 @@ class _BookFormState extends State<BookForm> {
               }
               return null;
             },
-            intialValue: name,
+            intialValue: widget.book.name,
           ),
 
           SizedBox(height: 16),
@@ -74,7 +62,7 @@ class _BookFormState extends State<BookForm> {
             keyboardType: TextInputType.text,
             onSaved: (value) {
               setState(() {
-                author = value!;
+                widget.book.author = value!;
               });
             },
             validator: (value) {
@@ -83,14 +71,14 @@ class _BookFormState extends State<BookForm> {
               }
               return null;
             },
-            intialValue: author,
+            intialValue: widget.book.author,
           ),
 
           SizedBox(height: 16),
           Category(
             onCategoryChanged: (value) {
               setState(() {
-                category = value;
+                widget.book.category = value;
               });
             },
           ),
@@ -99,7 +87,7 @@ class _BookFormState extends State<BookForm> {
           Rating(
             onRatingChanged: (value) {
               setState(() {
-                rating = value;
+                widget.book.rate = value;
               });
             },
           ),
@@ -110,25 +98,18 @@ class _BookFormState extends State<BookForm> {
             maxLines: 15,
             onSaved: (value) {
               setState(() {
-                notes = value!;
+                widget.book.notes = value!;
               });
             },
             validator: (p0) {
               return null;
             },
-            intialValue: notes,
+            intialValue: widget.book.notes,
           ),
           SizedBox(height: 16),
           AddButton(
             formKey: formKey,
-            oldBook: widget.book,
-            newbook: BookModel(
-              name: name,
-              category: category,
-              author: author,
-              rate: rating,
-              notes: notes,
-            ),
+            newbook: widget.book,
             onPressed: () {
               setState(() {
                 autovalidateMode = AutovalidateMode.always;

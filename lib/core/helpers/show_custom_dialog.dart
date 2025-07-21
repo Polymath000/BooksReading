@@ -20,7 +20,7 @@ Future<dynamic> showCustomAddDialog({
         child: SingleChildScrollView(
           child: BlocProvider.value(
             value: BookMangeCubit(),
-            child: BookForm(book: book, title: title),
+            child: BookForm(book: book),
           ),
         ),
       ),
